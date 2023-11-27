@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { UploadFile, addToFireStore, invalidThumbnail, invalidBookFile } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -7,24 +7,23 @@ const UploadBooks = () => {
     const user = JSON.parse(localStorage.getItem('user')!)
     const [title, setTitle] = useState('')    
     const [description, setDescription] = useState('')    
-    const [file, setFile] = useState(null)   
-    const [thumbNail, setThumbNail] = useState(null)
+    const [file, setFile] = useState<File | null>(null)   
+    const [thumbNail, setThumbNail] = useState<File | null>(null)
     const [alert, setAlert] = useState('')
     const [showAlert, setShowAlert] = useState(false)
 
-    function handleChange(e: any){
-        const target = e.target
-        setFile(target.files[0])
+    function handleChange(e: ChangeEvent<HTMLInputElement>){
+        setFile(e.target.files![0])
     }
-    function handleChangeTN(e: any){
-        const target = e.target
-        setThumbNail(target.files[0])
+    
+    function handleChangeTN(e: ChangeEvent<HTMLInputElement>){
+        setThumbNail(e.target.files![0])
     }
 
-    async function handleSubmit(e: FormEvent){
+    async function handleSubmit(e: React.FormEvent){
         e.preventDefault()
 
-        if(file != null && thumbNail != null){
+        if(file &&  thumbNail){
             if(!title) {
                 setAlert('Title is required')
                 setShowAlert(true)
@@ -74,6 +73,9 @@ const UploadBooks = () => {
                 },2000);
             } catch (error) {
                 console.log(error)
+                setAlert('Input file is required')
+                setShowAlert(true)
+                setTimeout(()=>  setShowAlert(false), 2000)
             }
        }
 

@@ -1,4 +1,4 @@
-import {  FormEvent, useState } from "react";
+import {  useState } from "react";
 import { addToFireStore } from "../firebase";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const Register = () => {
     const [type, setType] = useState('password')
     const [showAlert, setShowAlert] = useState(false)
 
-    function handleSubmit(e: FormEvent){
+    function handleSubmit(e: React.FormEvent){
         e.preventDefault()
         addToFireStore('users', {email, password, addedAt: Date.now()})
             .then(() => {

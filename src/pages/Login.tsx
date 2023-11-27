@@ -12,7 +12,7 @@ const Login = () => {
     const [showAlert, setShowAlert] = useState(false)
     const [alertValue, setAlertValue] = useState('')
 
-    function handleSubmit(e: any){
+    function handleSubmit(e: React.FormEvent){
         e.preventDefault()
         checkIfUserExist(email, password)
             .then((user)=>{
