@@ -30,6 +30,9 @@ const Login = () => {
                     }, 2000)
                 }else{
                     setShowAlert(true)
+                    setTimeout(() => {
+                        setShowAlert(false)
+                    }, 2000);
                     setAlertValue('No user found')
                 }
             })
