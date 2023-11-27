@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import { getFirestore, addDoc, collection, deleteDoc, doc, getDocs, query } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,6 +16,12 @@ const firebaseConfig = {
   measurementId: "G-VVNKNMKP7L"
 };
 
+type User = {
+  username: string,
+  password: string,
+  AddedAt: number
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
@@ -23,6 +29,31 @@ const db = getFirestore(app)
 export function addToFireStore(collectionName: string, data: object){
   return addDoc(collection(db, collectionName), data)
 }
+
 export function deleteToFireStore(collectionName: string, id: string ){
   return deleteDoc(doc(db, collectionName, id))
+}
+
+export async function checkIfUserExist(username: string, password: string){
+  const q = query(collection(db, 'users'));
+  let user = {
+    username,
+    password,
+    isExist : false
+  }
+
+  try {
+    const res = await getDocs(q);
+
+    res.forEach((doc: any) => {
+      if (doc.data().email === username && doc.data().password === password) {
+        user.isExist = true
+      }
+    });
+
+    return user;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return user;
+  }
 }

@@ -1,23 +1,18 @@
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { addToFireStore, deleteToFireStore } from "../firebase";
+import { addToFireStore } from "../firebase";
 addToFireStore
 
 const Home = () => {
-
-    function handleClick(){
-        addToFireStore('users', {name: 'rymnd', age: 22, hobbies: ['gaming', 'coding', 'traveling', 'watching']})
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-    }
-    function deleteData(){
-        deleteToFireStore('users', 'rHEPYs9NBPwdpHOFBp0e')
-        .then(() => console.log('delete success'))
-        .catch(err => console.log(err))
-    }
+    
+    useEffect(()=>{
+        const user = JSON.parse(localStorage.getItem('user')!)
+        console.log(user)
+    },[])
 
     return ( 
         <>
-            <Navbar />
+          <Navbar />
         </>
      );
 }

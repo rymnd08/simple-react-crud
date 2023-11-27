@@ -1,20 +1,38 @@
-import { useState } from "react";
+import {  FormEvent, useState } from "react";
 import { addToFireStore } from "../firebase";
-const Register = () => {
+import { useNavigate, Link } from "react-router-dom";
 
+
+const Register = () => {
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [type, setType] = useState('password')
+    const [showAlert, setShowAlert] = useState(false)
 
-    function handleSubmit(e: any){
+    function handleSubmit(e: FormEvent){
         e.preventDefault()
         addToFireStore('users', {email, password, addedAt: Date.now()})
-            .then(res => console.log(res))
+            .then(() => {
+                setEmail('')
+                setPassword('')
+                setShowAlert(true)
+                setTimeout(()=> {
+                    setShowAlert(false)
+                    navigate('/login')
+                }, 2000)
+            })
             .catch(err => console.log(err))
     }
+
     return ( 
-        <div className="h-screen w-full flex items-center justify-center bg-indigo-500">
-            <div className="form-container rounded bg-white w-[380px] px-8 py-10">
+        <div className="h-screen w-full flex items-center justify-center bg-indigo-500 relative">
+
+            {/* Alert message */}
+            {showAlert && 
+                <div className="absolute top-0 w-[380px] bg-indigo-700 py-3 text-center text-white font-bold ">UserCreated Successfully</div>
+            }
+            <div className="form-container rounded bg-white w-[380px] px-8 py-10 shadow-lg shadow-indigo-800">
                 <h3 className="text-center text-slate-500 font-semibold text-xl mb-8">Create your account</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -49,6 +67,10 @@ const Register = () => {
                         type="submit" 
                         className="w-full bg-indigo-600 py-3 rounded text-white font-semibold"
                     >Create Account</button>
+                    <div className="mt-4 text-center">
+                        <p className="text-slate-500">Already have an account?</p>
+                        <small className="text-blue-500 underline text-center"><Link to="/login">Click here</Link></small>
+                    </div>
                 </form>
             </div>
         </div>
