@@ -36,8 +36,6 @@ const Login = () => {
                     setAlertValue('No user found')
                 }
             })
-
-        
     }
     return ( 
         <div className="h-screen w-full flex items-center justify-center bg-indigo-500 relative">

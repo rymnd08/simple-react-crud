@@ -3,26 +3,28 @@ import Content from "../components/Content";
 import { useState, useEffect } from "react";
 import { getBooks } from "../firebase";
 
-type Books = {
-  addedAt: number
+export type Books = {
+  bookID: string
+  userID: string
+  title: string
+  thumbNail: string
   bookFile: string
   description: string
-  thumbNail: string
-  title: string
-  userID: string
+  addedAt: number
 }
 
 const Home = () => {
   const [data, setData] = useState<Books[]>([])
 
   async function getAllBooks(){
-      const tempArr : any = []
+      const tempArr: Books[] =  []
       const books = await getBooks()
       books.forEach(doc =>{
-          tempArr.push({...doc.data(), bookID: doc.id})
+          tempArr.push({...doc.data(), bookID: doc.id} as Books)
       })
       setData(tempArr)
   }
+  
   useEffect(()=>{
       getAllBooks()
       console.log(data)
