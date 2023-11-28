@@ -49,10 +49,10 @@ const UploadBooks = () => {
                 return 
             }
 
-            await UploadFile(thumbNail, `thumbNails/${thumbNail.name}`).catch(err => console.log('thumbnail upload err'))
-            const imageURL = await getDownloadImageURL(`thumbNails/${thumbNail.name}`).catch(err => console.log('download thumbnail err'))
-            await UploadFile(file, `books/${file.name}`).catch(err => console.log('upload firestore err'))
-            const pdfURL = await getDownloadImageURL(`books/${file.name}`).catch(err => console.log('upload firestore 2 error'))
+            await UploadFile(thumbNail, `thumbNails/${thumbNail.name}`).catch(err => console.log(err))
+            const imageURL = await getDownloadImageURL(`thumbNails/${thumbNail.name}`).catch(err => console.log(err))
+            await UploadFile(file, `books/${file.name}`).catch(err => console.log(err))
+            const pdfURL = await getDownloadImageURL(`books/${file.name}`).catch(err => console.log(err))
             await addToFireStore('books', {
                 userID: user.id,
                 title,
@@ -62,7 +62,7 @@ const UploadBooks = () => {
                 bookFile: file.name,
                 bookFileURL: pdfURL,
                 addedAt: Date.now()
-            }).catch(err => console.log('error adding book'))
+            }).catch(err => console.log(err))
 
             setAlert('Uploaded successfully')
             setLoading(false)
