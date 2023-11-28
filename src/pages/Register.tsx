@@ -1,5 +1,5 @@
 import {  useState } from "react";
-import { addToFireStore } from "../firebase";
+import { addToFireStore, getUsers } from "../firebase";
 import { useNavigate, Link } from "react-router-dom";
 
 
@@ -9,20 +9,40 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [type, setType] = useState('password')
     const [showAlert, setShowAlert] = useState(false)
+    const [alertValue, setAlertValue] = useState('')
 
-    function handleSubmit(e: React.FormEvent){
+   async function handleSubmit(e: React.FormEvent){
         e.preventDefault()
-        addToFireStore('users', {email, password, addedAt: Date.now()})
-            .then(() => {
-                setEmail('')
-                setPassword('')
-                setShowAlert(true)
-                setTimeout(()=> {
-                    setShowAlert(false)
-                    navigate('/login')
-                }, 2000)
+        
+        try {
+            const usersSnapshot = await getUsers()
+            let isEmailExist = false
+            usersSnapshot.forEach(doc =>{
+                if(doc.data().email === email){
+                    isEmailExist = true
+                }
             })
-            .catch(err => console.log(err))
+            if(isEmailExist){
+                setShowAlert(true)
+                setTimeout(()=>setShowAlert(false), 2000)
+                setAlertValue('Email was already taken')
+                return
+            }
+
+            await addToFireStore('users', {email: email.trim(), password: password.trim(), addedAt: Date.now()})
+            setEmail('')
+            setPassword('')
+            setAlertValue('User created successfully')
+            setShowAlert(true)
+            setTimeout(()=> {
+                setShowAlert(false)
+                navigate('/login')
+            }, 2000)
+
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     return ( 
@@ -30,7 +50,7 @@ const Register = () => {
 
             {/* Alert message */}
             {showAlert && 
-                <div className="absolute top-0 w-[380px] bg-indigo-700 py-3 text-center text-white font-bold ">UserCreated Successfully</div>
+                <div className="absolute top-0 w-[380px] bg-indigo-700 py-3 text-center text-white font-bold ">{alertValue} </div>
             }
             <div className="form-container rounded bg-white w-[380px] px-8 py-10 shadow-lg shadow-indigo-800">
                 <h3 className="text-center text-slate-500 font-semibold text-xl mb-8">Create your account</h3>

@@ -38,7 +38,12 @@ const Login = () => {
                 setShowAlert(true)
                 localStorage.setItem('user', JSON.stringify(user))
                 setTimeout(() => {
-                    navigate('/')
+                    const search = location.search.replace('?','')
+                    if(search==='false'){
+                        navigate('/my-books')
+                    }else{
+                        navigate('/')
+                    }
                 }, 2000);
             }else{
                 setAlertValue('No user found')
@@ -79,6 +84,7 @@ const Login = () => {
                             id="email"
                             value={email}
                             onChange={(e)=>setEmail((e.target.value))}
+                            autoFocus
                         />
                     </div>
                     <div className="mb-4">

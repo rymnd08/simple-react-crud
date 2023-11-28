@@ -123,7 +123,6 @@ const UploadBooks = () => {
                        </textarea>
                     </div>
                     
-                        
                     <button
                         type="submit" 
                         className="w-full bg-indigo-600 py-3 rounded text-white font-semibold"
