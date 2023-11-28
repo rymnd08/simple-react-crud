@@ -15,7 +15,6 @@ export type Books = {
 
 const Home = () => {
   const [data, setData] = useState<Books[]>([])
-
   async function getAllBooks(){
       const tempArr: Books[] =  []
       const books = await getBooks()
@@ -24,12 +23,10 @@ const Home = () => {
       })
       setData(tempArr)
   }
-  
+
   useEffect(()=>{
       getAllBooks()
-      console.log(data)
   },[])
-
     return ( 
         <>
           <Navbar />

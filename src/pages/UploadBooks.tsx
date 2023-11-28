@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { UploadFile, addToFireStore, invalidThumbnail, invalidBookFile } from "../firebase";
+import { ChangeEvent, useState } from "react";
+import { UploadFile, addToFireStore, invalidThumbnail, invalidBookFile, getDownloadImageURL } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 const UploadBooks = () => {
@@ -11,7 +11,7 @@ const UploadBooks = () => {
     const [thumbNail, setThumbNail] = useState<File | null>(null)
     const [alert, setAlert] = useState('')
     const [showAlert, setShowAlert] = useState(false)
-
+    const [loading, setLoading] = useState(false)
     function handleChange(e: ChangeEvent<HTMLInputElement>){
         setFile(e.target.files![0])
     }
@@ -22,8 +22,8 @@ const UploadBooks = () => {
 
     async function handleSubmit(e: React.FormEvent){
         e.preventDefault()
-
         if(file &&  thumbNail){
+            setLoading(true)
             if(!title) {
                 setAlert('Title is required')
                 setShowAlert(true)
@@ -49,48 +49,37 @@ const UploadBooks = () => {
                 return 
             }
 
-            try {
-                const upload = await UploadFile('books', file, thumbNail)
-                const tn = upload?.thumbnail
-                const eb = upload?.book
-                await addToFireStore('books', {
-                    userID: user.userID,
-                    title,
-                    description,
-                    thumbNail: tn,
-                    bookFile: eb,
-                    addedAt: Date.now()
-                })
-                setDescription('')
-                setFile(null)
-                setThumbNail(null)
-                setTitle('')
-                setAlert('Uploaded successfully')
-                setShowAlert(true)
-                setTimeout(() => {
-                    setShowAlert(false)
-                    nav('/my-books')
-                },2000);
-            } catch (error) {
-                console.log(error)
-                setAlert('Input file is required')
-                setShowAlert(true)
-                setTimeout(()=>  setShowAlert(false), 2000)
-            }
+            await UploadFile(thumbNail, `thumbNails/${thumbNail.name}`).catch(err => console.log('thumbnail upload err'))
+            const imageURL = await getDownloadImageURL(`thumbNails/${thumbNail.name}`).catch(err => console.log('download thumbnail err'))
+            await UploadFile(file, `books/${file.name}`).catch(err => console.log('upload firestore err'))
+            const pdfURL = await getDownloadImageURL(`books/${file.name}`).catch(err => console.log('upload firestore 2 error'))
+            await addToFireStore('books', {
+                userID: user.id,
+                title,
+                description,
+                thumbNail: thumbNail.name,
+                thumbNailURL: imageURL,
+                bookFile: file.name,
+                bookFileURL: pdfURL,
+                addedAt: Date.now()
+            }).catch(err => console.log('error adding book'))
+
+            setAlert('Uploaded successfully')
+            setLoading(false)
+            setShowAlert(true)
+            setTimeout(() => {
+                setShowAlert(false)
+                nav('/my-books')
+            }, 2000);
+
        }
-
-
 
     }
 
-    useEffect(()=>{
-        console.log(alert)
-    },[alert])
-
     return ( 
-        <div className="min-h-screen w-full flex items-center justify-center bg-indigo-400 relative">
-            {showAlert && <div className="absolute top-0 w-[380px] bg-indigo-700 text-white text-center font-semibold p-3">{alert}</div>}
-            <div className="bg-white w-[380px] p-4 rounded relative" >
+        <div className="min-h-screen w-full flex items-center justify-center bg-indigo-700 relative">
+            {showAlert && <div className="absolute top-0 w-[380px] bg-indigo-500 text-white text-center font-semibold p-3">{alert}</div>}
+            <div className="bg-white w-[380px] px-4 py-6 rounded relative " >
             <button className="absolute top-0 right-0 m-2" onClick={()=> nav('/my-books')}><i className="bi bi-x-lg"></i></button>
             <form onSubmit={handleSubmit} encType="multipart/form-data" id="FORM">
                     <div className="mb-4">
@@ -138,7 +127,10 @@ const UploadBooks = () => {
                     <button
                         type="submit" 
                         className="w-full bg-indigo-600 py-3 rounded text-white font-semibold"
-                    >Upload</button>
+                    >
+                        {loading && <span>Uploading... <p className="animate-spin inline-block"><i className="bi bi-arrow-clockwise text-md"></i></p></span>}
+                        {!loading && <span>Upload</span>}
+                     </button>
                 </form>
             </div>
         </div>

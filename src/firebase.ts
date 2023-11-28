@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore, addDoc, collection, deleteDoc, doc, getDocs, query  } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,51 +36,36 @@ export function getBooks(){
   return getDocs(query(collection(db, 'books')))
 }
 
-export async function checkIfUserExist(email: string, password: string){
+export  function getUsers(){
   const q = query(collection(db, 'users'));
-  let user = {
-    email,
-    isExist : false,
-    userID: ''
-  }
-
-  try {
-    const res = await getDocs(q);
-
-    res.forEach((doc: any) => {
-      if (doc.data().email === email && doc.data().password === password) {
-        user.isExist = true
-        user.userID = doc.id
-      }
-    });
-
-    return user;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return user;
-  }
+  return  getDocs(q);
 }
 
+
+
 //File Upload
+export function getDownloadImageURL(fileName: string){
+  return getDownloadURL(ref(storage, fileName) )
+}
 
-export async function UploadFile(path: string, file: File, file2: File){
-  try {
+export function UploadFile(file: File, fileName: string){
+  // try {
 
-    const ext = getExtenstion(file.name).toLowerCase()
-    const ext2 = getExtenstion(file2.name).toLowerCase()
+  //   const ext = getExtenstion(file.name).toLowerCase()
+  //   const ext2 = getExtenstion(file2.name).toLowerCase()
 
-    const filename = `${path}/IMG_${Date.now()}.${ext}`
-    const filename2 = `${path}/File_${Date.now()}.${ext2}`
+  //   const filename = `${path}/IMG_${Date.now()}.${ext}`
+  //   const filename2 = `${path}/File_${Date.now()}.${ext2}`
 
-    const storageRef = ref(storage, filename);
-    const storageRef2 = ref(storage, filename2 );
+    const storageRef = ref(storage, fileName);
+  //   const storageRef2 = ref(storage, filename2 );
 
-    await uploadBytes(storageRef, file)
-    await uploadBytes(storageRef2, file2)
+    return  uploadBytes(storageRef, file)
+    // await uploadBytes(storageRef2, file2)
 
-    return {thumbnail: filename, book: filename2}
+  //   return {thumbnail: filename, book: filename2}
 
-  } catch (error) {}
+  // } catch (error) {}
 }
 
 function getExtenstion(filename: string){
