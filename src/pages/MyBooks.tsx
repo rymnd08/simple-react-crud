@@ -1,39 +1,15 @@
 import Navbar from "../components/Navbar";
-import {useNavigate} from "react-router-dom"
-import { useState, useEffect } from "react";
-import { getBooks } from "../firebase";
 import Content from "../components/Content";
-
-export type Books = {
-  bookID: string
-  userID: string
-  title: string
-  thumbNail: string
-  bookFile: string
-  description: string
-  addedAt: number
-}
+import useGetBooks from "../hooks/useGetBooks";
+import { useNavigate } from "react-router-dom";
 
 const MyBooks = () => {
-    const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user')!)
-    const [data, setData] = useState<Books[]>([])
-    async function getAllBooks(){
-        const tempArr: Books[] =  []
-        const books = await getBooks()
-        books.forEach(doc =>{
-            tempArr.push({...doc.data(), bookID: doc.id} as Books)
-
-        })
-        const arr = tempArr.filter(element =>{
-            return element.userID == user.id
-        })
-        setData(arr)
-    }
-  
-    useEffect(()=>{
-        getAllBooks()
-},[])
+    const navigate = useNavigate()
+    const {data} = useGetBooks()
+    const items = data.filter(book =>{
+        return book.userID === user.id
+    })
     
     return ( 
         <>
@@ -45,8 +21,8 @@ const MyBooks = () => {
                         <i className="bi bi-journal-plus"></i> Upload book
                     </button>
     
-                    <Content booksData={data} />
-                    {data.length ==0  && 
+                    <Content booksData={items} />
+                    {items.length ==0  && 
                         <div className="text-indigo-700">
                             <h3 className="text-2xl">No books uploaded 😞</h3>
                         </div>

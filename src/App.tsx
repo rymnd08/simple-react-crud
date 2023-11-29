@@ -8,6 +8,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Register";
 import UploadBooks from "./pages/UploadBooks";
 import MyBooks from "./pages/MyBooks";
+import Book from "./pages/Book";
 
 function App() {
   const router = createBrowserRouter([
@@ -16,6 +17,7 @@ function App() {
     { path: "/register", element: <Register />},
     { path: "/my-books", element: <MyBooks />},
     { path: "/create", element: <UploadBooks />},
+    { path: "/book/:id", element: <Book />},
     { path: "*", element: <PageNotFound />},
   ]);
 

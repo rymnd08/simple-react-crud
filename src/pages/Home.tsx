@@ -1,32 +1,10 @@
 import Navbar from "../components/Navbar";
 import Content from "../components/Content";
-import { useState, useEffect } from "react";
-import { getBooks } from "../firebase";
-
-export type Books = {
-  bookID: string
-  userID: string
-  title: string
-  thumbNail: string
-  bookFile: string
-  description: string
-  addedAt: number
-}
+import useGetBooks from "../hooks/useGetBooks";
 
 const Home = () => {
-  const [data, setData] = useState<Books[]>([])
-  async function getAllBooks(){
-      const tempArr: Books[] =  []
-      const books = await getBooks()
-      books.forEach(doc =>{
-          tempArr.push({...doc.data(), bookID: doc.id} as Books)
-      })
-      setData(tempArr)
-  }
+    const {data} = useGetBooks()
 
-  useEffect(()=>{
-      getAllBooks()
-  },[])
     return ( 
         <>
           <Navbar />
