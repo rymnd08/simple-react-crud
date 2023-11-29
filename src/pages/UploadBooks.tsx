@@ -93,7 +93,7 @@ const UploadBooks = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="file" className="text-slate-500 font-semibold">Thumbnail (Portrait)</label>
+                        <label htmlFor="file" className="text-slate-500 font-semibold">Thumbnail: <span className="text-xs font-normal">(Portrait)</span></label>
                         <input type="file"
                             className="w-full focus:outline-none bg-slate-200 py-3 px-3 text-sm text-slate-800 " 
                             id="file1"
@@ -103,11 +103,11 @@ const UploadBooks = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="file" className="text-slate-500 font-semibold">E-book file</label>
+                        <label htmlFor="file" className="text-slate-500 font-semibold">E-book file: (<span className="text-xs font-normal">Click <a className="text-blue-500 underline" target="_blank" href="https://learn.g2.com/ebook-formats"> here</a> to see formats</span>)</label>
                         <input type="file"
                             className="w-full focus:outline-none bg-slate-200 py-3 px-3 text-sm text-slate-800 " 
                             id="file2"
-                            accept=".pdf"
+                            accept=".pdf, .epub, .mobi, .txt, .azw, .docx, .doc"
                             onChange={handleChange}
                         />
                     </div>

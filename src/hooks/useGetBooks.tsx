@@ -9,6 +9,8 @@ export type Books = {
     bookFile: string
     description: string
     addedAt: number
+    thumbNailURL: string
+    bookFileURL: string
   }
 
 const useGetBooks = () => {
@@ -20,7 +22,6 @@ const useGetBooks = () => {
             tempArr.push({...doc.data(), bookID: doc.id} as Books)
 
         })
-
         setData(tempArr)
     }
 

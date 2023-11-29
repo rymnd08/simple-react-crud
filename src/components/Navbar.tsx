@@ -24,7 +24,7 @@ const Navbar = () => {
         <div className="grid grid-cols-3 place-items-center bg-indigo-700 text-white  fixed top-0 w-full z-30 whitespace-nowrap bg-opacity-95 py-8">
             <div className="flex items-center gap-2">
                 <img className="w-16" src="https://www.freepnglogos.com/uploads/book-png/red-thick-book-png-clipart-30.png" alt="" />
-                <Link to={'/'}>Books.ph</Link>
+                <Link to={'/'} className="hidden md:inline-block">findBooks.ph</Link>
             </div>
             <div className="flex">
                 <Link to="/" className={`hover:bg-black px-3 ${location.pathname === '/' ? 'bg-black': ''}`}>Home</Link>

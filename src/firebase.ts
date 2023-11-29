@@ -87,7 +87,8 @@ export function invalidThumbnail(file: File){
 }
 export function invalidBookFile(file2: File){
   const ext2 = getExtenstion(file2.name).toLowerCase()
-  if(ext2 != 'pdf' ){
+  const validFormat = ['pdf', 'epub', 'mobi','azw','txt','doc']
+  if(!validFormat.includes(ext2)){
     return true
   }else{
     return false
