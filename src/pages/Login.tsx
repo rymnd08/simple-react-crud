@@ -4,7 +4,7 @@ import { getUsers } from "../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-type User = {
+export type User = {
     email: string
     id: string
 }
@@ -18,7 +18,7 @@ const Login = () => {
     const [type, setType] = useState('password')
     const [showAlert, setShowAlert] = useState(false)
     const [alertValue, setAlertValue] = useState('')
-
+    
     async function handleSubmit(e: React.FormEvent){
         e.preventDefault()
         try {

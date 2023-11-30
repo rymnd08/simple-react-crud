@@ -15,21 +15,30 @@ export type Books = {
 
 const useGetBooks = () => {
     const [data, setData] = useState<Books[]>([])
+    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    
     async function getAllBooks(){
-        const tempArr: Books[] =  []
-        const books = await getBooks()
-        books.forEach(doc =>{
-            tempArr.push({...doc.data(), bookID: doc.id} as Books)
-
-        })
-        setData(tempArr)
+        try {
+            setIsLoading(true)
+            const tempArr: Books[] =  []
+            const books = await getBooks()
+            books.forEach(doc =>{
+                tempArr.push({...doc.data(), bookID: doc.id} as Books)
+    
+            })
+            setData(tempArr)
+            setIsLoading(false)
+        } catch (err) {
+            setError('Error: '+ err)
+        }
     }
 
     useEffect(()=>{
         getAllBooks()
     },[])
 
-    return {data}
+    return {data, error, isLoading}
 
     }
  

@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate, } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type User = {
     id: string
@@ -10,15 +10,12 @@ const Navbar = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState<User | null>(JSON.parse(localStorage.getItem('user')!))
     const location = useLocation()
+
     function logOut(){
         localStorage.removeItem('user')
         setUser(null)
+        navigate('/')
     }
-    useEffect(()=>{
-        if(!user){
-            navigate('/')
-        }
-    },[user])
     
     return ( 
         <div className="grid grid-cols-3 place-items-center bg-indigo-700 text-white  fixed top-0 w-full z-30 whitespace-nowrap bg-opacity-95 py-8">

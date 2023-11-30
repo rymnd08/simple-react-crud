@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore, addDoc, collection, deleteDoc, doc, getDocs, query  } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -49,23 +49,8 @@ export function getDownloadImageURL(fileName: string){
 }
 
 export function UploadFile(file: File, fileName: string){
-  // try {
-
-  //   const ext = getExtenstion(file.name).toLowerCase()
-  //   const ext2 = getExtenstion(file2.name).toLowerCase()
-
-  //   const filename = `${path}/IMG_${Date.now()}.${ext}`
-  //   const filename2 = `${path}/File_${Date.now()}.${ext2}`
-
     const storageRef = ref(storage, fileName);
-  //   const storageRef2 = ref(storage, filename2 );
-
     return  uploadBytes(storageRef, file)
-    // await uploadBytes(storageRef2, file2)
-
-  //   return {thumbnail: filename, book: filename2}
-
-  // } catch (error) {}
 }
 
 function getExtenstion(filename: string){
@@ -76,7 +61,7 @@ function getExtenstion(filename: string){
 
 export function invalidThumbnail(file: File){
   const ext = getExtenstion(file.name).toLowerCase()
-  const extensions =  ['jpg', 'png', 'jpeg', 'webp']
+  const extensions =  ['jpg', 'png', 'jpeg', 'webp', 'jfif']
 
   if(!extensions.includes(ext)){
     return true
@@ -93,4 +78,10 @@ export function invalidBookFile(file2: File){
   }else{
     return false
   }
+}
+
+//delete file in bucket
+export function deleteFileInStorage(fileName: string){
+  const fileRef = ref(storage, fileName)
+  return deleteObject(fileRef)
 }

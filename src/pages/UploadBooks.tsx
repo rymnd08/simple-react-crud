@@ -59,7 +59,7 @@ const UploadBooks = () => {
                 description,
                 thumbNail: thumbNail.name,
                 thumbNailURL: imageURL,
-                bookFile: file.name,
+                bookFile: `File_${Date.now()}${file.name}`,
                 bookFileURL: pdfURL,
                 addedAt: Date.now()
             }).catch(err => console.log(err))
