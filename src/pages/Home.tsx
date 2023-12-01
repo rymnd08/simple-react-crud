@@ -26,7 +26,6 @@ const Home = () => {
     }
 
     useEffect(()=>{
-      console.log(data)
       setBooksData(data)
     },[data])
 

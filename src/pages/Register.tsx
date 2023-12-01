@@ -52,7 +52,8 @@ const Register = () => {
             {showAlert && 
                 <div className="absolute top-0 w-[380px] bg-indigo-700 py-3 text-center text-white font-bold ">{alertValue} </div>
             }
-            <div className="form-container rounded bg-white w-[380px] px-8 py-10 shadow-lg shadow-indigo-800">
+            <div className="form-container rounded bg-white w-[380px] px-8 py-10 shadow-lg shadow-indigo-800 relative">
+                <button onClick={()=> navigate('/',)} type="button" className="absolute top-0 right-0 m-2 text-2xl"><i className="bi bi-x"></i></button>
                 <h3 className="text-center text-slate-500 font-semibold text-xl mb-8">Create your account</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
