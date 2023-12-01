@@ -1,12 +1,8 @@
-import { FormEvent, useState } from "react";
+import { SearchProps } from "../pages/Home";
 
-const SearchBook = () => {
-    const [search , setSearch] = useState('')
+const SearchBook = ({handleSubmit, search, setSearch }: SearchProps) => {
 
-    function handleSubmit(e: FormEvent){
-        e.preventDefault()
-        alert(search)
-    }
+
 
     return ( 
         <div className="border mb-4  border-indigo-300 ">
