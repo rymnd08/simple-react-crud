@@ -7,18 +7,20 @@ import { useState } from "react";
 
 const Book = () => {
     const user : User = JSON.parse(localStorage.getItem('user')!)
-    const { id } = useParams();
-    const { data, isLoading } = useGetBooks();
     const nav = useNavigate()
     const [isDeleting, setIsDeleting] = useState(false)
-    if (!data || data.length === 0 || isLoading) {
-        return <div>Loading...</div>;
-    }
-
+    const { id } = useParams();
+    const { data, isLoading } = useGetBooks();
     const book = data.find((book) => book.bookID === id);
 
-    if (!book) {
-        return <div>Book not found</div>;
+    if(!book){
+        return (
+            <div className="mt-32 flex justify-center">
+            <Navbar />
+            <div className="max-w-5xl grow"></div>
+                No book found
+            </div>
+        )
     }
 
     async function deleteBook(bookID: string, bookFile: string, imageFile: string){
@@ -61,6 +63,9 @@ const Book = () => {
     return (
         <div className="mt-32 flex justify-center">
             <Navbar />
+            {isLoading || data.length === 0 && <>
+                <span>Loading..</span>
+            </>}
             <div className="max-w-5xl grow relative mb-20 bg-indigo-50 overflow-hidden py-6 lg:py-0" key={book.bookID}>
                 <div className="absolute bottom-0 lg:right-0 m-4 flex gap-4">
                     {user.id === book.userID && 
