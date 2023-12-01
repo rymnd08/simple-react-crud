@@ -68,7 +68,7 @@ const Book = () => {
             </>}
             <div className="max-w-5xl grow relative mb-20 bg-indigo-50 overflow-hidden py-6 lg:py-0" key={book.bookID}>
                 <div className="absolute bottom-0 lg:right-0 m-4 flex gap-4">
-                    {user.id === book.userID && 
+                    {user && user.id === book.userID && 
                     <button 
                         className="bg-rose-500 text-white py-1 px-3 rounded" 
                         onClick={()=> deleteBook(book.bookID, book.bookFile, book.thumbNail)}>
