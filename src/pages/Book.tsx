@@ -62,11 +62,15 @@ const Book = () => {
 
     return (
         <div className="mt-32 flex justify-center">
+            
             <Navbar />
+
             {isLoading || data.length === 0 && <>
                 <span>Loading..</span>
             </>}
+
             <div className="max-w-5xl grow relative mb-20 bg-indigo-50 overflow-hidden py-6 lg:py-0" key={book.bookID}>
+                
                 <div className="absolute bottom-0 lg:right-0 m-4 flex gap-4">
                     {user && user.id === book.userID && 
                     <button 
@@ -81,6 +85,7 @@ const Book = () => {
                         Download <i className="bi bi-download"></i>
                     </button>
                 </div>
+
                 <div className="flex flex-col lg:flex-row lg:items-center p-4 gap-10">
                     <div className="bg-slate-700 aspect-[3/4] min-w-[300px] max-w-[300px] flex items-center self-center shadow-lg">
                         <img src={book.thumbNailURL} alt="" className="object-contain h-full w-full" />
@@ -91,6 +96,7 @@ const Book = () => {
                         <p className="text-slate-500">{book.description}</p>
                     </div>
                 </div>
+                
             </div>
         </div>
     );

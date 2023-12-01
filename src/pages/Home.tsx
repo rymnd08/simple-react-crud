@@ -11,6 +11,7 @@ export type SearchProps = {
 }
 
 const Home = () => {
+
     const [booksData, setBooksData] = useState<Books[]>([])
     const {data, isLoading} = useGetBooks()
     const [search , setSearch] = useState('')
@@ -22,7 +23,6 @@ const Home = () => {
         return pattern.test(book.title) || pattern.test(book.description)
       })
       setBooksData(filteredData)
-      console.log(filteredData)
     }
 
     useEffect(()=>{
@@ -34,14 +34,12 @@ const Home = () => {
           <Navbar />
           <div className="flex justify-center relative z-10 mt-[125px] h-screen">
             <div className="max-w-5xl grow mx-4 md:mx-0">
+
               <Search handleSubmit={handleSubmit} search={search} setSearch={setSearch} />
-            {isLoading &&
-              <span>Loading...</span>
-            }
-            {!isLoading &&  
-              <Content booksData={booksData} />
-            }
-            {booksData.length === 0 && <div>No books found.</div>}
+
+              {isLoading && <span>Loading...</span>}
+              {!isLoading && <Content booksData={booksData} />}
+              {booksData.length === 0 && <div>No books found.</div>}
 
             </div>
           </div>

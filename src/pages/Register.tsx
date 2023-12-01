@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 
 const Register = () => {
+    
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -30,6 +31,7 @@ const Register = () => {
             }
 
             await addToFireStore('users', {email: email.trim(), password: password.trim(), addedAt: Date.now()})
+
             setEmail('')
             setPassword('')
             setAlertValue('User created successfully')
@@ -56,6 +58,7 @@ const Register = () => {
                 <button onClick={()=> navigate('/',)} type="button" className="absolute top-0 right-0 m-2 text-2xl"><i className="bi bi-x"></i></button>
                 <h3 className="text-center text-slate-500 font-semibold text-xl mb-8">Create your account</h3>
                 <form onSubmit={handleSubmit}>
+
                     <div className="mb-4">
                         <label htmlFor="email" className="text-slate-500 font-semibold">Email</label>
                         <input type="text" 
@@ -66,6 +69,7 @@ const Register = () => {
                             onChange={(e)=>setEmail((e.target.value))}
                         />
                     </div>
+
                     <div className="mb-4">
                         <label htmlFor="password" className="text-slate-500 font-semibold">Password</label>
                         <input type={type}
@@ -87,11 +91,15 @@ const Register = () => {
                     <button
                         type="submit" 
                         className="w-full bg-indigo-600 py-3 rounded text-white font-semibold"
-                    >Create Account</button>
+                    >
+                        Create Account
+                    </button>
+
                     <div className="mt-4 text-center">
                         <p className="text-slate-500">Already have an account?</p>
                         <small className="text-blue-500 underline text-center"><Link to="/login">Click here</Link></small>
                     </div>
+
                 </form>
             </div>
         </div>
