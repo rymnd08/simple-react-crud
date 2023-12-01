@@ -9,6 +9,7 @@ const UploadBooks = () => {
             <div className="bg-white w-[380px] px-4 py-6 rounded relative " >
             <button className="absolute top-0 right-0 m-2" onClick={()=> nav('/my-books')}><i className="bi bi-x-lg"></i></button>
             <form onSubmit={handleSubmit} encType="multipart/form-data" id="FORM">
+
                     <div className="mb-4">
                         <label htmlFor="title" className="text-slate-500 font-semibold">Book title</label>
                         <input type="text" 
@@ -19,6 +20,7 @@ const UploadBooks = () => {
                             onChange={(e)=> setTitle(e.target.value)}
                         />
                     </div>
+
                     <div className="mb-4">
                         <label htmlFor="file" className="text-slate-500 font-semibold">Thumbnail: <span className="text-xs font-normal">(Portrait)</span></label>
                         <input type="file"
@@ -29,6 +31,7 @@ const UploadBooks = () => {
                             onChange={handleChangeTN}
                         />
                     </div>
+
                     <div className="mb-4">
                         <label htmlFor="file" className="text-slate-500 font-semibold">E-book file: (<span className="text-xs font-normal">Click <a className="text-blue-500 underline" target="_blank" href="https://learn.g2.com/ebook-formats"> here</a> to see formats</span>)</label>
                         <input type="file"
@@ -38,6 +41,7 @@ const UploadBooks = () => {
                             onChange={handleChange}
                         />
                     </div>
+                    
                     <div className="mb-4">
                         <label htmlFor="description" className="text-slate-500 font-semibold">Description</label>
                         <textarea
